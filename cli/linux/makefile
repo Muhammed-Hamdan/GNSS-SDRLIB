@@ -10,12 +10,11 @@ USE_STEREO=0
 
 SRC=../../src
 RTKLIB=../../lib/rtklib
-FEC=/usr/include
 STEREO=../../src/rcv/stereo
 RTLSDR=../../src/rcv/rtlsdr
 BLADERF=../../src/rcv/bladerf
 
-INCLUDE=-I$(SRC) -I$(RTKLIB) -I$(FEC) -I$(STEREO) -I$(RTLSDR) -I$(BLADERF)
+INCLUDE=-I$(SRC) -I$(RTKLIB) -I$(STEREO) -I$(RTLSDR) -I$(BLADERF)
 
 CC=gcc
 OPTIONS=-DSSE2_ENABLE -DFFTMTX
