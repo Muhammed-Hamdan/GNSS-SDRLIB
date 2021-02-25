@@ -84,10 +84,10 @@ using namespace gnsssdrgui;
 #include <stdbool.h>
 #include <inttypes.h>
 
-#include "fec.h"
-#include "fftw3.h"
+#include <fec.h>
+#include <fftw3.h>
 #include "rtklib.h"
-#include "libusb-1.0/libusb.h"
+#include <libusb-1.0/libusb.h>
 #ifdef STEREO
 #include "stereo.h"
 #endif
@@ -95,7 +95,8 @@ using namespace gnsssdrgui;
 #include "gn3s.h"
 #endif
 #ifdef BLADERF
-#include "libbladeRF.h"
+#include <libbladeRF.h>
+#include "bladeRF.h"
 #endif
 #ifdef RTLSDR
 #include "rtl-sdr.h"
