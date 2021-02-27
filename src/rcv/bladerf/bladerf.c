@@ -122,6 +122,8 @@ extern int bladerf_initconf(void)
 {
     int ret;
     unsigned int actual,samplerate=(unsigned int)sdrini.f_sf[0];
+    bladerf_gain gain=(int)sdrini.f_gain[0];
+    bladerf_gain_mode mode = BLADERF_GAIN_MGC;
 
     /* set direction(Rx/Tx) */
     module=BLADERF_MODULE_RX;
@@ -148,6 +150,37 @@ extern int bladerf_initconf(void)
         bladerf_quit();
         return -1;
     }
+    
+    if(gain > 0) /* AGC is enabled if gain is not set */
+    {
+		/* set gain mode */
+		ret=bladerf_set_gain_mode(bladerf,module,mode);
+		if (ret<0) {
+			SDRPRINTF("error: failed to set rx gain mode: %s\n",bladerf_strerror(ret));
+			bladerf_quit();
+			return -1;
+		}
+  	
+    	/* set rx gain */
+		ret = bladerf_set_gain(bladerf,module,gain);
+		if (ret<0) {
+			SDRPRINTF("error: failed to set rx gain: %s\n",bladerf_strerror(ret));
+			bladerf_quit();
+			return -1;
+		}
+	}
+	
+	ret=bladerf_get_gain_mode(bladerf,module, &mode);
+	if (ret<0) {
+		SDRPRINTF("error: failed to read gain mode: %s\n",bladerf_strerror(ret));
+		bladerf_quit();
+		return -1;
+	}
+	
+	if(mode==BLADERF_GAIN_MGC)
+		SDRPRINTF("rx manual gain set to %d\n", gain);
+	else
+		SDRPRINTF("rx gain mode set to AGC\n");
 
     /* initialize the stream */
     ret=bladerf_init_stream(&stream,bladerf,stream_callback,&buffers,

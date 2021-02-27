@@ -325,6 +325,7 @@ typedef fftwf_complex cpx_t; /* complex type for fft */
 /* sdr initialization struct */
 typedef struct {
     int fend;            /* front end type */
+    int f_gain[2];			 /* front end rx gain */
     double f_cf[2];      /* center frequency (Hz) */
     double f_sf[2];      /* sampling frequency (Hz) */
     double f_if[2];      /* intermediate frequency (Hz) */
@@ -548,6 +549,7 @@ typedef struct {
     double f_cf;         /* carrier frequency (Hz) */
     double f_sf;         /* sampling rate (Hz) */
     double f_if;         /* intermediate frequency (Hz) */
+    int f_gain;			 /* front end rx gain */
     double foffset;      /* frequency offset (Hz) */
     short *code;         /* original code */
     cpx_t *xcode;        /* resampled code in frequency domain */
@@ -691,7 +693,7 @@ extern void inittrkprmstruct(sdrtrk_t *trk);
 extern int inittrkstruct(int sat, int ctype, double ctime, sdrtrk_t *trk);
 extern int initnavstruct(int sys, int ctype, int prn, sdrnav_t *nav);
 extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype, 
-                     int ftype, double f_cf, double f_sf, double f_if,
+                     int ftype, int f_gain, double f_cf, double f_sf, double f_if,
                      sdrch_t *sdr);
 extern void freesdrch(sdrch_t *sdr);
 
