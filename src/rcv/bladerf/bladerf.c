@@ -122,8 +122,9 @@ extern int bladerf_initconf(void)
 {
     int ret;
     unsigned int actual,samplerate=(unsigned int)sdrini.f_sf[0];
-    bladerf_gain gain=(int)sdrini.f_gain[0];
+    bladerf_gain gain=sdrini.f_gain[0];
     bladerf_gain_mode mode = BLADERF_GAIN_MGC;
+    int bias=sdrini.f_bias[0];
 
     /* set direction(Rx/Tx) */
     module=BLADERF_MODULE_RX;
@@ -181,6 +182,8 @@ extern int bladerf_initconf(void)
 		SDRPRINTF("rx manual gain set to %d\n", gain);
 	else
 		SDRPRINTF("rx gain mode set to AGC\n");
+	
+	bladerf_set_bias_tee(bladerf,module, bias);
 
     /* initialize the stream */
     ret=bladerf_init_stream(&stream,bladerf,stream_callback,&buffers,
