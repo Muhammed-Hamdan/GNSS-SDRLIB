@@ -30,7 +30,7 @@ void *stream_callback(struct bladerf *dev, struct bladerf_stream *stream,
     mlock(hbuffmtx);
     /* copy stream data to global buffer */
     for (i=0;i<2*BLADERF_DATABUFF_SIZE;i++)
-        sdrstat.buff[ind+i]=(unsigned char)((sample[i]&0xfff));
+        sdrstat.buff[ind+i]=(unsigned char)((sample[i]>>4)+127.5);
     unmlock(hbuffmtx);
 
     mlock(hreadmtx);
@@ -326,12 +326,12 @@ extern void bladerf_getbuff(uint64_t buffloc, int n, char *expbuf)
 extern void fbladerf_pushtomembuf(void) 
 {
     size_t nread;
-    int16_t buff[BLADERF_DATABUFF_SIZE*2];
+    uint16_t buff[BLADERF_DATABUFF_SIZE*2];
     int i,ind;
 
     mlock(hbuffmtx);
 
-    nread=fread(buff,sizeof(int16_t),2*BLADERF_DATABUFF_SIZE,sdrini.fp1);
+    nread=fread(buff,sizeof(uint16_t),2*BLADERF_DATABUFF_SIZE,sdrini.fp1);
     
     /* buffer index */
     ind=(sdrstat.buffcnt%MEMBUFFLEN)*2*BLADERF_DATABUFF_SIZE;

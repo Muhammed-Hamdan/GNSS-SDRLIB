@@ -4,7 +4,7 @@
 
 # Use or not use RTLSDR and BLADERF
 # 1:Use 0:Not Use
-USE_RTLSDR=0
+USE_RTLSDR=1
 USE_BLADERF=1
 USE_STEREO=0
 
