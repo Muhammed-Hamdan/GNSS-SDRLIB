@@ -5,6 +5,7 @@
 * Copyright (C) 2014 Nuand LLC
 *-----------------------------------------------------------------------------*/
 #include "sdr.h"
+#include <unistd.h>
 
 struct bladerf *bladerf; 
 struct bladerf_stream *stream;
@@ -121,8 +122,10 @@ extern void bladerf_quit(void)
 extern int bladerf_initconf(void) 
 {
     int ret;
+    bool clock=0;
     unsigned int actual,samplerate=(unsigned int)sdrini.f_sf[0];
     bladerf_gain gain=sdrini.f_gain[0];
+    int clock_ref=sdrini.f_clock[0];
     bladerf_gain_mode mode = BLADERF_GAIN_MGC;
     int bias=sdrini.f_bias[0];
 
@@ -183,7 +186,36 @@ extern int bladerf_initconf(void)
 	else
 		SDRPRINTF("rx gain mode set to AGC\n");
 	
-	bladerf_set_bias_tee(bladerf,module, bias);
+	ret=bladerf_set_bias_tee(bladerf,module, bias);
+	if (ret<0) {
+		SDRPRINTF("error: failed to set bias-tee: %s\n",bladerf_strerror(ret));
+		bladerf_quit();
+		return -1;
+	}
+	
+	ret=bladerf_set_pll_enable(bladerf, clock_ref);
+	if (ret<0) {
+		SDRPRINTF("error: failed to set clock_ref: %s\n",bladerf_strerror(ret));
+		bladerf_quit();
+		return -1;
+	}
+	
+	// let pll settle if changing clock_ref
+	if(clock_ref)
+		usleep(200000);
+	
+	ret=bladerf_get_pll_enable(bladerf, &clock);
+	if (ret<0) {
+		SDRPRINTF("error: failed to read clock_ref: %s\n",bladerf_strerror(ret));
+		bladerf_quit();
+		return -1;
+	}
+	printf("bladeRF clock_ref %s\n", clock?"external":"internal");
+	if(clock)
+	{
+		bladerf_get_pll_lock_state(bladerf, &clock);
+		printf("clock_ref pll %s\n", clock?"locked":"unlocked");
+	}
 
     /* initialize the stream */
     ret=bladerf_init_stream(&stream,bladerf,stream_callback,&buffers,

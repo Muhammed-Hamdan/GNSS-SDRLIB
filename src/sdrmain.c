@@ -128,8 +128,9 @@ extern void startsdr(void) /* call as function */
         if (initsdrch(i+1,sdrini.sys[i],sdrini.prn[i],sdrini.ctype[i],
             sdrini.dtype[sdrini.ftype[i]-1],sdrini.ftype[i],
             sdrini.f_gain[sdrini.ftype[i]-1],sdrini.f_bias[sdrini.ftype[i]-1],
-            sdrini.f_cf[sdrini.ftype[i]-1],sdrini.f_sf[sdrini.ftype[i]-1],
-            sdrini.f_if[sdrini.ftype[i]-1],&sdrch[i])<0) {
+            sdrini.f_clock[sdrini.ftype[i]-1],sdrini.f_cf[sdrini.ftype[i]-1],
+            sdrini.f_sf[sdrini.ftype[i]-1],sdrini.f_if[sdrini.ftype[i]-1],
+            &sdrch[i])<0) {
             
             SDRPRINTF("error: initsdrch\n");
             quitsdr(&sdrini,2);
@@ -157,8 +158,8 @@ extern void startsdr(void) /* call as function */
 
             /* create QZSS L1CA channel */
             initsdrch(sdrini.nch+1,SYS_QZS,193,CTYPE_L1CA,DTYPEI,FTYPE1,
-               sdrini.f_gain[0],sdrini.f_bias[0],sdrini.f_cf[0],sdrini.f_sf[0],
-               sdrini.f_if[0],&sdrch[sdrini.nch]);
+               sdrini.f_gain[0],sdrini.f_bias[0],sdrini.f_clock[0],
+               sdrini.f_cf[0],sdrini.f_sf[0],sdrini.f_if[0],&sdrch[sdrini.nch]);
             cratethread(sdrch[sdrini.nch].hsdr,sdrthread,&sdrch[sdrini.nch]);
         }
     }

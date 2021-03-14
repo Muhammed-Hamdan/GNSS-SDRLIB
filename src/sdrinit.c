@@ -150,12 +150,14 @@ extern int readinifile(sdrini_t *ini)
     ini->f_if[0]=readinidouble(fendfile,"FEND","IF1");
     ini->f_gain[0]=readiniint(fendfile,"FEND", "GAIN");
     ini->f_bias[0]=readiniint(fendfile,"FEND", "BIAS");
+    ini->f_clock[0]=readiniint(fendfile,"FEND", "CLOCK");
     ini->dtype[0]=readiniint(fendfile,"FEND","DTYPE1");
     ini->f_cf[1]=readinidouble(fendfile,"FEND","CF2");
     ini->f_sf[1]=readinidouble(fendfile,"FEND","SF2");
     ini->f_if[1]=readinidouble(fendfile,"FEND","IF2");
     ini->f_gain[1]=readiniint(fendfile,"FEND", "GAIN");
     ini->f_bias[1]=readiniint(fendfile,"FEND", "BIAS");
+    ini->f_clock[1]=readiniint(fendfile,"FEND", "CLOCK");
     ini->dtype[1]=readiniint(fendfile,"FEND","DTYPE2");
 
     /* RTL-SDR only */
@@ -658,6 +660,8 @@ extern int initnavstruct(int sys, int ctype, int prn, sdrnav_t *nav)
 *          int    dtype     I   data type (DTYPEI or DTYPEIQ)
 *          int    ftype     I   front end type (FTYPE1 or FTYPE2)
 *          int    f_gain	I	rx gain
+*          int    f_bias	I	rx bias-tee
+*          int    f_clock   I   rx clock (internal or external)
 *          double f_cf      I   center (carrier) frequency (Hz)
 *          double f_sf      I   sampling frequency (Hz)
 *          double f_if      I   intermidiate frequency (Hz)
@@ -665,7 +669,7 @@ extern int initnavstruct(int sys, int ctype, int prn, sdrnav_t *nav)
 * return : int                  0:okay -1:error
 *-----------------------------------------------------------------------------*/
 extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
-                     int ftype, int f_gain, int f_bias, double f_cf, double f_sf, double f_if,
+                     int ftype, int f_gain, int f_bias, int f_clock, double f_cf, double f_sf, double f_if,
                      sdrch_t *sdr)
 {
     int i;
@@ -681,6 +685,7 @@ extern int initsdrch(int chno, int sys, int prn, int ctype, int dtype,
     sdr->f_sf=f_sf;
     sdr->f_gain=f_gain;
     sdr->f_bias=f_bias;
+    sdr->f_clock=f_clock;
     sdr->f_if=f_if;
     sdr->ti=1/f_sf;
     
