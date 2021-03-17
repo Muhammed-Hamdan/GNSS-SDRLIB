@@ -532,7 +532,7 @@ extern int initnavstruct(int sys, int ctype, int prn, sdrnav_t *nav)
                        1,-1,-1, 1,-1, 1,-1,-1, 1, 1,
                        1 -1,-1, 1}; /* SBAS L1/QZS L1SAIF preamble */
 
-    int poly[2]={V27POLYA,V27POLYB};
+    int poly[2]={V27POLYB,V27POLYA};
 
     nav->ctype=ctype;
     nav->sdreph.ctype=ctype;
