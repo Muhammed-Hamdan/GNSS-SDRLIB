@@ -358,7 +358,7 @@ extern void bladerf_getbuff(uint64_t buffloc, int n, char *expbuf)
 extern void fbladerf_pushtomembuf(void) 
 {
     size_t nread;
-    uint16_t buff[BLADERF_DATABUFF_SIZE*2];
+    int16_t buff[BLADERF_DATABUFF_SIZE*2];
     int i,ind;
 
     mlock(hbuffmtx);

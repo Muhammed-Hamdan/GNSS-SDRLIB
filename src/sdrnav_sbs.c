@@ -52,7 +52,8 @@ void gen_novatel_sbasmsg(sdrsbas_t *sbas)
     setU4(&sbas->novatelmsg[16],(int)(sbas->tow*1000)); /* GPS tow */
 
     /* body */
-    setU4(&sbas->novatelmsg[OEMHLEN+4],183); /* PRN */
+//FIXME! need to extract proper sbas prn
+    setU4(&sbas->novatelmsg[OEMHLEN+4],138);/* PRN */
     setU4(&sbas->novatelmsg[OEMHLEN+8],sbas->id); /* frame ID */
     /* message (29 bytes) */
     for (i=0;i<29;i++) sbas->novatelmsg[OEMHLEN+12+i]=sbas->msg[i];

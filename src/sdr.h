@@ -210,6 +210,7 @@ extern "C" {
 
 /* observation data generation */
 #define PTIMING       68.802           /* pseudo range generation timing (ms) */
+#define SBAS_PTIMING  121.07356        /* SBAS pseudo range generation timing (ms) */
 #define OBSINTERPN    80               /* # of obs. stock for interpolation */
 #define SNSMOOTHMS    100              /* SNR smoothing interval (ms) */
 
@@ -497,6 +498,7 @@ typedef struct {
     int id;              /* message ID */
     int week;            /* GPS week */
     double tow;          /* GPS time of week (s) */
+    int prn;
 } sdrsbas_t;
 
 /* sdr navigation struct */

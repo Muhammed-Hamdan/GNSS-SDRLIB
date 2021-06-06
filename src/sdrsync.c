@@ -57,8 +57,13 @@ extern void *syncthread(void * arg)
                 isat[nsat]=i;
                 nsat++;
             }
+            else if (sdrch[i].prn == 138)
+            {
+                memcpy(&trk[nsat],&sdrch[i].trk,sizeof(sdrch[i].trk));
+                isat[nsat]=i;
+                nsat++;
+            }
         }
-
         unmlock(hobsmtx);
 
         /* find minimum tow channel (most distant satellite) */
@@ -91,7 +96,7 @@ extern void *syncthread(void * arg)
         for (i=0;i<nsat;i++) {
             codei[i]=trk[i].codei[ind[i]];
             remcode[i]=trk[i].remcout[ind[i]];
-            if (trk[i].codei[ind[i]]<mincodei) {
+            if (trk[i].codei[ind[i]]<mincodei && sdrch[isat[i]].prn < 33) {
                 refi=i;
                 mincodei=trk[i].codei[ind[i]];
             }
@@ -109,10 +114,13 @@ extern void *syncthread(void * arg)
             obs[i].sys=sdrch[isat[i]].sys;
             obs[i].prn=sdrch[isat[i]].prn;
             obs[i].week=sdrch[isat[i]].nav.sdreph.week_gpst;
-            obs[i].tow=reftow+(double)(PTIMING)/1000; 
+            obs[i].tow=reftow+(double)(PTIMING)/1000;
             obs[i].P=CLIGHT*sdrch[isat[i]].ti*
                 ((double)(codei[i]-sampref)-remcode[i]); /* pseudo range */
-            
+
+            if(obs[i].prn > 32) // sbas
+                obs[i].P += CLIGHT*(double)(SBAS_PTIMING-PTIMING)/1000;
+
             /* uint64 to double for interp1 */
             uint64todouble(trk[i].codei,sampbase,OBSINTERPN,codeid);
             obs[i].L=interp1(codeid,trk[i].L,OBSINTERPN,samprefd);
@@ -148,7 +156,6 @@ extern void *syncthread(void * arg)
                 if (sdrini.rinex) {
                     if (writerinexnav(sdrout.rinexnav,
                         &sdrout.opt,&sdrch[i].nav.sdreph)<0) {
-                        
                         sdrstat.stopflag=ON;
                     }
                 }

@@ -72,8 +72,10 @@ extern void sdrobs2obsd(sdrobs_t *sdrobs, int ns, obsd_t *out)
         out[i].P[0]=sdrobs[i].P;
         out[i].L[0]=sdrobs[i].L;
         out[i].D[0]=(float)sdrobs[i].D;
-        out[i].SNR[0]=(unsigned char)(sdrobs[i].S*4.0+0.5);
-
+        if(sdrobs[i].S > 63.6)
+            out[i].SNR[0]=255;
+        else
+            out[i].SNR[0]=(unsigned char)(sdrobs[i].S*4.0+0.5);
         /* signal type */
         out[i].code[0]=CODE_L1C; /* L1C/A,G1C/A,E1C (GPS,GLO,GAL,QZS,SBS) */
     }
