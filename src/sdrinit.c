@@ -555,6 +555,7 @@ extern int initnavstruct(int sys, int ctype, int prn, sdrnav_t *nav)
     }
     /* SBAS/QZS L1SAIF */
     if (ctype==CTYPE_L1SAIF||ctype==CTYPE_L1SBAS) {
+    	nav->sbas.prn=prn;
         nav->rate=NAVRATE_SBAS;
         nav->flen=NAVFLEN_SBAS;
         nav->addflen=NAVADDFLEN_SBAS;

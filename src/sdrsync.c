@@ -119,8 +119,10 @@ extern void *syncthread(void * arg)
                 ((double)(codei[i]-sampref)-remcode[i]); /* pseudo range */
 
             if(obs[i].prn > 32) // sbas
+            {
                 obs[i].P += CLIGHT*(double)(SBAS_PTIMING-PTIMING)/1000;
-
+                obs[i].tow += (double)(SBAS_PTIMING-PTIMING)/1000;
+            }
             /* uint64 to double for interp1 */
             uint64todouble(trk[i].codei,sampbase,OBSINTERPN,codeid);
             obs[i].L=interp1(codeid,trk[i].L,OBSINTERPN,samprefd);
