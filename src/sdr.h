@@ -248,6 +248,8 @@ extern "C" {
 #define CTYPE_L1SBAS  27               /* SBAS compatible L1CA */
 #define CTYPE_NH10    28               /* 10 bit Neuman-Hoffman code */
 #define CTYPE_NH20    29               /* 20 bit Neuman-Hoffman code */
+#define CTYPE_L5N     30               /* NavIC L5 SPS*/
+#define CTYPE_SN      31               /* NavIC S SPS*/
 
 /* gnuplot plotting setting */
 #define PLT_Y         1                /* plotting type: 1D data */
@@ -344,6 +346,7 @@ typedef struct {
     int nchL2;           /* number of L2 channels */
     int nchL5;           /* number of L5 channels */
     int nchL6;           /* number of L6 channels */
+    int nchS;            /* number of S channels */
     int prn[MAXSAT];     /* PRN of channels */
     int sys[MAXSAT];     /* satellite system type of channels (SYS_*) */
     int ctype[MAXSAT];   /* code type of channels (CTYPE_* )*/

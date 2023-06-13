@@ -219,6 +219,12 @@ extern int readinifile(sdrini_t *ini)
         if (sdrini.ctype[i]==CTYPE_LEXS) {
             sdrini.nchL6++;
         }
+        if (sdrini.ctype[i]==CTYPE_L5N) {
+            sdrini.nchL6++;
+        }
+        if (sdrini.ctype[i]==CTYPE_SN) {
+            sdrini.nchS++;
+        }
     }
     return 0;
 }
