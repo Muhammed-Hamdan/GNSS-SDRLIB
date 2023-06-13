@@ -95,6 +95,8 @@ extern int bladerf_init(void)
             bladerf_close(bladerf);
             return -1;
         }
+    } else {
+    	SDRPRINTF("testing: bladerf fpga is configured\n");
     }
 
     /* set configuration */
@@ -141,12 +143,15 @@ extern int bladerf_initconf(void)
     }
     
     /* set bandwidth (half of sampling frequency) */
+    /*
     ret=bladerf_set_bandwidth(bladerf,module,samplerate/2,&actual);
     if (ret<0) {
         SDRPRINTF("error: failed to set bandwidth: %s\n",bladerf_strerror(ret));
         bladerf_quit();
         return -1;
     }
+    */
+
     /* set sample rate */
     ret=bladerf_set_sample_rate(bladerf,module,samplerate,&actual);
     if (ret<0) {

@@ -1,10 +1,11 @@
 #
 # makefile for gnss-sdr-cli
+# NOTE: A final change of RTKLIB_android (that supports NavIC) must be reflected (static or dynamic library) 
 #
 
 # Use or not use RTLSDR and BLADERF
 # 1:Use 0:Not Use
-USE_RTLSDR=1
+USE_RTLSDR=0
 USE_BLADERF=1
 USE_STEREO=0
 
@@ -40,14 +41,14 @@ endif
 
 ifeq ($(USE_BLADERF),1)
 OPTIONS+=-DBLADERF
-LIBS+=-lbladeRF
+LIBS+=-l:libbladeRF.so.2
 OBS+=bladerf.o
 endif
 
 CFLAGS=-Wall -O3 -march=native $(INCLUDE) $(OPTIONS) -g
 LDLIBS=-lm -lrt -lfftw3f -lfftw3f_threads -lpthread $(LIBS) -lusb-1.0
 
-BIN= gnss-sdrcli
+BIN= ignss-sdrcli
 $(BIN): $(OBS)
 	 $(CC) -o $(BIN) $(OBS) $(CFLAGS) $(LDLIBS)
 	 @cp $(BIN) ../../bin
