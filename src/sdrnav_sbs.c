@@ -58,7 +58,7 @@ void gen_novatel_sbasmsg(sdrsbas_t *sbas)
     for (i=0;i<29;i++) sbas->novatelmsg[OEMHLEN+12+i]=sbas->msg[i];
 
     /* crc32 */
-    setU4(&sbas->novatelmsg[OEMHLEN+48],crc32(sbas->novatelmsg,(OEMHLEN+48))); 
+    setU4(&sbas->novatelmsg[OEMHLEN+48],rtk_crc32(sbas->novatelmsg,(OEMHLEN+48))); 
 }
 /* decode SBAS message (Message Type 12) ---------------------------------------
 *
@@ -109,7 +109,7 @@ extern int decode_l1sbas(sdrnav_t *nav)
     bits2byte(&bits[226],24,3,0,pbin); /* crc24 */
 
     /* compute and check crc24 */
-    crc=crc24q(bin,29);
+    crc=rtk_crc24q(bin,29);
     crcmsg=getbitu(pbin,0,24);
     if (crc==crcmsg) {
     } else {

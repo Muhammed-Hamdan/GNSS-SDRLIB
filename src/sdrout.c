@@ -306,27 +306,27 @@ extern void sendrtcmnav(sdreph_t *sdreph, sdrsoc_t *soc)
         rtcm.ephsat=sdreph->eph.sat;
         rtcm.nav.eph[rtcm.ephsat-1]=sdreph->eph;
         sys=satsys(sdreph->eph.sat,NULL);
-        if (sys==SYS_GPS)       gen_rtcm3(&rtcm,1019,0); /* rtcm generation */
-        else if (sys==SYS_QZS)  gen_rtcm3(&rtcm,1044,0); /* rtcm generation */
+        if (sys==SYS_GPS)       gen_rtcm3(&rtcm,1019,0,0); /* rtcm generation */
+        else if (sys==SYS_QZS)  gen_rtcm3(&rtcm,1044,0,0); /* rtcm generation */
         break;
     /* Galileo E1B (INAV) navigation data */
     case CTYPE_E1B:
         rtcm.ephsat=sdreph->eph.sat;
         rtcm.nav.eph[rtcm.ephsat-1]=sdreph->eph;
-        gen_rtcm3(&rtcm,1045,0); /* rtcm generation */
+        gen_rtcm3(&rtcm,1045,0,0); /* rtcm generation */
         break;
     /* GLONASS G1 navigation data */
     case CTYPE_G1:
         satsys(sdreph->geph.sat,&prn);
         rtcm.ephsat=sdreph->geph.sat;
         rtcm.nav.geph[prn-1]=sdreph->geph;
-        gen_rtcm3(&rtcm,1020,0); /* rtcm generation */
+        gen_rtcm3(&rtcm,1020,0,0); /* rtcm generation */
         break;
     /* BeiDou B1I navigation data (note: using original rtcm format) */
     case CTYPE_B1I:
         rtcm.ephsat=sdreph->eph.sat;
         rtcm.nav.eph[rtcm.ephsat-1]=sdreph->eph;
-        gen_rtcm3(&rtcm,1047,0); /* rtcm generation */
+        gen_rtcm3(&rtcm,1047,0,0); /* rtcm generation */
         break;
     }
     /* tcp send */
@@ -354,27 +354,27 @@ extern void sendrtcmobs(obsd_t *obsd, sdrsoc_t *soc, int nsat)
     rtcm.obs.data=obsd;
     
     /* GPS rtcm msm */
-    gen_rtcm3(&rtcm,1077,1);
+    gen_rtcm3(&rtcm,1077,0,1);
     if (send(soc->c_soc,(char*)rtcm.buff,rtcm.nbyte,0)==SOCKET_ERROR) {
         soc->flag=OFF;
     }
     /* QZSS rtcm msm */
-    gen_rtcm3(&rtcm,1117,1);
+    gen_rtcm3(&rtcm,1117,0,1);
     if (send(soc->c_soc,(char*)rtcm.buff,rtcm.nbyte,0)==SOCKET_ERROR) {
         soc->flag=OFF;
     }
     /* Galileo rtcm msm */
-    gen_rtcm3(&rtcm,1097,1);
+    gen_rtcm3(&rtcm,1097,0,1);
     if (send(soc->c_soc,(char*)rtcm.buff,rtcm.nbyte,0)==SOCKET_ERROR) {
         soc->flag=OFF;
     }
     /* GLONASS rtcm msm generation */
-    gen_rtcm3(&rtcm,1087,1);
+    gen_rtcm3(&rtcm,1087,0,1);
     if (send(soc->c_soc,(char*)rtcm.buff,rtcm.nbyte,0)==SOCKET_ERROR) {
         soc->flag=OFF;
     }
     /* BeiDou rtcm msm generation */
-    gen_rtcm3(&rtcm,1127,0);
+    gen_rtcm3(&rtcm,1127,0,0);
     if (send(soc->c_soc,(char*)rtcm.buff,rtcm.nbyte,0)==SOCKET_ERROR) {
         soc->flag=OFF;
     }

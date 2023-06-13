@@ -215,7 +215,7 @@ extern int checkcrc_e1b(uint8_t *data1, uint8_t *data2)
         }
     }
     bits2byte(crcbits,196,25,1,crcbins); /* right alignment for crc */
-    crc=crc24q(crcbins,25); /* compute crc24 */
+    crc=rtk_crc24q(crcbins,25); /* compute crc24 */
     crcmsg=getbitu(data2,82,24); /* crc in message */
     
     /* crc matching */

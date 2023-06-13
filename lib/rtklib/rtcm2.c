@@ -1,17 +1,16 @@
 /*------------------------------------------------------------------------------
 * rtcm2.c : rtcm ver.2 message functions
 *
-*          Copyright (C) 2009-2012 by T.TAKASU, All rights reserved.
+*          Copyright (C) 2009-2014 by T.TAKASU, All rights reserved.
 *
 * references :
 *     see rtcm.c
 *
 * version : $Revision:$ $Date:$
 * history : 2011/11/28 1.0  separated from rtcm.c
+*           2014/10/21 1.1  fix problem on week rollover in rtcm 2 type 14
 *-----------------------------------------------------------------------------*/
-#include "sdr.h"
-
-static const char rcsid[]="$Id:$";
+#include "rtklib.h"
 
 /* adjust hourly rollover of rtcm 2 time -------------------------------------*/
 static void adjhour(rtcm_t *rtcm, double zcnt)
@@ -116,8 +115,9 @@ static int decode_type14(rtcm_t *rtcm)
         trace(2,"rtcm2 14 length error: len=%d\n",rtcm->len);
         return -1;
     }
+    week=adjgpsweek(week);
     rtcm->time=gpst2time(week,hour*3600.0+zcnt*0.6);
-    rtcm->nav.leaps=leaps;
+    rtcm->nav.utc_gps[4]=leaps;
     return 6;
 }
 /* decode type 16: gps special message ---------------------------------------*/
@@ -188,6 +188,7 @@ static int decode_type17(rtcm_t *rtcm)
     eph.ttr=rtcm->time;
     eph.A=sqrtA*sqrtA;
     rtcm->nav.eph[sat-1]=eph;
+    rtcm->ephset=0;
     rtcm->ephsat=sat;
     return 2;
 }

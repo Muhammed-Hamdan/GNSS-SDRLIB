@@ -356,7 +356,7 @@ extern int paritycheck(sdrnav_t *nav)
         bits2byte(&bits[226],24,3,0,pbin);
 
         /* compute CRC24 */
-        crc=crc24q(bin,29);
+        crc=rtk_crc24q(bin,29);
         if (crc==getbitu(pbin,0,24)) {
             return 1;
         }
