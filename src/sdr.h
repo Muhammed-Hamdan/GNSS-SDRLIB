@@ -155,6 +155,7 @@ extern "C" {
 #define ACQINTG_E1B   4                /* number of non-coherent integration */
 #define ACQINTG_B1I   10               /* number of non-coherent integration */
 #define ACQINTG_SBAS  10               /* number of non-coherent integration */
+#define ACQINTG_ISS   10               /* number of non-coherent integration */
 #define ACQHBAND      7000             /* half width for doppler search (Hz) */
 #define ACQSTEP       200              /* doppler search frequency step (Hz) */
 #define ACQTH         3.0              /* acquisition threshold (peak ratio) */
@@ -168,6 +169,8 @@ extern "C" {
 #define LOOP_B1IG     2                /* loop interval */
 #define LOOP_SBAS     2                /* loop interval */
 #define LOOP_LEX      4                /* loop interval */
+#define LOOP_I5S      10               /* loop interval */
+#define LOOP_ISS      10               /* loop interval */
 
 /* navigation parameter */
 #define NAVSYNCTH       50             /* navigation frame synch. threshold */
@@ -248,8 +251,8 @@ extern "C" {
 #define CTYPE_L1SBAS  27               /* SBAS compatible L1CA */
 #define CTYPE_NH10    28               /* 10 bit Neuman-Hoffman code */
 #define CTYPE_NH20    29               /* 20 bit Neuman-Hoffman code */
-#define CTYPE_L5N     30               /* NavIC L5 SPS*/
-#define CTYPE_SN      31               /* NavIC S SPS*/
+#define CTYPE_I5S     30               /* NavIC L5 SPS*/
+#define CTYPE_ISS     31               /* NavIC S SPS*/
 
 /* gnuplot plotting setting */
 #define PLT_Y         1                /* plotting type: 1D data */

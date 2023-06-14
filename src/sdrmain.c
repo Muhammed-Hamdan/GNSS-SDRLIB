@@ -142,14 +142,15 @@ extern void startsdr(void) /* call as function */
     openhandles();
 
     /* create threads */
-    cratethread(hsyncthread,syncthread,NULL); /* synchronization thread */
+    //cratethread(hsyncthread,syncthread,NULL); /* synchronization thread */
 
     /* sdr channel thread */
     for (i=0;i<sdrini.nch;i++) {
-        /* GPS/QZS/GLO/GAL/CMP L1 */
+        /* GPS/QZS/GLO/GAL/CMP L1 IRNSS L5/S */
         if (sdrch[i].ctype==CTYPE_L1CA  || sdrch[i].ctype==CTYPE_G1  ||
             sdrch[i].ctype==CTYPE_E1B   || sdrch[i].ctype==CTYPE_B1I ||
-            sdrch[i].ctype==CTYPE_L1SBAS|| sdrch[i].ctype==CTYPE_L1SAIF)
+            sdrch[i].ctype==CTYPE_L1SBAS|| sdrch[i].ctype==CTYPE_L1SAIF ||
+            sdrch[i].ctype==CTYPE_I5S   || sdrch[i].ctype==CTYPE_ISS )
             cratethread(sdrch[i].hsdr,sdrthread,&sdrch[i]);
         /* QZSS LEX */
         if (sdrch[i].sys==SYS_QZS&&sdrch[i].ctype==CTYPE_LEXS) {
@@ -276,6 +277,9 @@ extern void *sdrthread(void *arg)
                 plot(&pltacq); 
             }
         }
+        
+        sdr->flagacq=0;
+
         /* tracking */
         if (sdr->flagacq) {
             bufflocnow=sdrtracking(sdr,buffloc,cnt);

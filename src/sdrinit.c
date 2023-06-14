@@ -219,10 +219,10 @@ extern int readinifile(sdrini_t *ini)
         if (sdrini.ctype[i]==CTYPE_LEXS) {
             sdrini.nchL6++;
         }
-        if (sdrini.ctype[i]==CTYPE_L5N) {
+        if (sdrini.ctype[i]==CTYPE_I5S) {
             sdrini.nchL6++;
         }
-        if (sdrini.ctype[i]==CTYPE_SN) {
+        if (sdrini.ctype[i]==CTYPE_ISS) {
             sdrini.nchS++;
         }
     }
@@ -419,6 +419,7 @@ extern void initacqstruct(int sys, int ctype, int prn, sdracq_t *acq)
     if (ctype==CTYPE_E1B)  acq->intg=ACQINTG_E1B;
     if (ctype==CTYPE_B1I)  acq->intg=ACQINTG_B1I;
     if (ctype==CTYPE_L1SAIF||ctype==CTYPE_L1SBAS) acq->intg=ACQINTG_SBAS;
+    if (ctype==CTYPE_I5S||ctype==CTYPE_ISS) acq->intg=ACQINTG_ISS;
 
     acq->hband=ACQHBAND;
     acq->step=ACQSTEP;
@@ -503,6 +504,8 @@ extern int inittrkstruct(int sat, int ctype, double ctime, sdrtrk_t *trk)
     if (ctype==CTYPE_L1SBAS) trk->loop=LOOP_SBAS;
     if (ctype==CTYPE_B1I&&prn>5 ) trk->loop=LOOP_B1I;
     if (ctype==CTYPE_B1I&&prn<=5) trk->loop=LOOP_B1IG;
+    if (ctype==CTYPE_I5S)   trk->loop=LOOP_I5S;
+    if (ctype==CTYPE_ISS)   trk->loop=LOOP_ISS;
     
     /* for LEX */
     if (sys==SYS_QZS&&ctype==CTYPE_L1CA&&sdrini.nchL6) trk->loop=LOOP_LEX;

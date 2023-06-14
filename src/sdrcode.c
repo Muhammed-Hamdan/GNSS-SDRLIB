@@ -31,6 +31,8 @@
 #define LEN_LEXL        1048575     /* QZSS LEX long */
 #define LEN_NH10        10          /* 10 bit Neuman-Hoffman code */
 #define LEN_NH20        20          /* 20 bit Neuman-Hoffman code */
+#define LEN_I5S         1023        /* NavIC L5 SPS*/
+#define LEN_ISS         1023        /* NavIC S SPS*/
 /* code chip rate (chip/s) */
 #define CRATE_L1CA      1.023E6     /* GPS/QZSS L1C/A */
 #define CRATE_L1CP      1.023E6     /* GPS/QZSS L1C Pilot */
@@ -57,6 +59,8 @@
 #define CRATE_LEXL      2.5575E6    /* QZSS LEX long */
 #define CRATE_NH10      1000        /* 10 bit Neuman-Hoffman code */
 #define CRATE_NH20      500         /* 20 bit Neuman-Hoffman code */
+#define CRATE_I5S       1.023E6     /* NavIC L5 SPS*/
+#define CRATE_ISS       1.023E6     /* NavIC S SPS*/
 
 /* global variables ----------------------------------------------------------*/
 static char legendre[10223]={0};
@@ -1303,7 +1307,83 @@ static short *gencode_NH20(int *len, double *crate)
 
     return code;
 }
+/* NavIC L5 C/A code (NavIC SPS ICD) --------------------------------------------*/
+static short *gencode_I5S(int prn, int *len, double *crate)
+{
+    const static short init[]={ /* G2 initial condition */
+        0b1110100111, 0b0000100110, 0b1000110100, 0b0101110010, 0b1110110000,
+        0b0001101011, 0b0000010100, 0b0100110000, 0b0010011000, 0b1101100100,
+        0b0001001100, 0b1101111100, 0b1011010010, 0b0111101010
+    };
+    char R1[10],R2[10],C1,C2;
+    short *code;
+    int i,j;
+
+    if (prn<1||MAXPRNIRN<prn||
+        !(code=(short *)malloc(sizeof(short)*LEN_I5S))) {
+        return NULL;
+    }
+    for (i=0;i<10;i++) {
+        R1[i]=-1;
+        R2[i]=1-2*((init[prn-1]>>i)&(short)1);
+    }
+    for (i=0;i<LEN_I5S;i++) {
+        code[i]=R1[9]*R2[9]; 
+        C1=R1[2]*R1[9];
+        C2=R2[1]*R2[2]*R2[5]*R2[7]*R2[8]*R2[9];
+        for (j=9;j>0;j--) {
+            R1[j]=R1[j-1];
+            R2[j]=R2[j-1];
+        }
+        R1[0]=C1;
+        R2[0]=C2;
+    }
+    
+    *len=LEN_I5S;
+    *crate=CRATE_I5S;
+
+    return code;
+}
+/* NavIC L5 C/A code (NavIC SPS ICD) --------------------------------------------*/
+static short *gencode_ISS(int prn, int *len, double *crate)
+{
+    const static short init[]={ /* G2 initial condition */
+        0b0011101111, 0b0101111101, 0b1000110001, 0b0010101011, 0b1010010001,
+        0b0100101100, 0b0010001110, 0b0100100110, 0b1100001110, 0b1010111110,
+        0b1110010001, 0b1101101001, 0b0101000101, 0b0100001101
+    };
+    char R1[10],R2[10],C1,C2;
+    short *code;
+    int i,j;
+
+    if (prn<1||MAXPRNIRN<prn||
+        !(code=(short *)malloc(sizeof(short)*LEN_ISS))) {
+        return NULL;
+    }
+    for (i=0;i<10;i++) {
+        R1[i]=-1;
+        R2[i]=1-2*((init[prn-1]>>i)&(short)1);
+    }
+    for (i=0;i<LEN_ISS;i++) {
+        code[i]=R1[9]*R2[9]; 
+        C1=R1[2]*R1[9];
+        C2=R2[1]*R2[2]*R2[5]*R2[7]*R2[8]*R2[9];
+        for (j=9;j>0;j--) {
+            R1[j]=R1[j-1];
+            R2[j]=R2[j-1];
+        }
+        R1[0]=C1;
+        R2[0]=C2;
+    }
+    
+    *len=LEN_ISS;
+    *crate=CRATE_ISS;
+
+    return code;
+}
+
 /* binary offset carrier (BOC) -------------------------------------------------
+
 * BOC modulation function
 * args   : short  *cide     I   GNSS code (-1 or 1)
 *          int    *len      I/O code length
@@ -1382,6 +1462,8 @@ extern short *gencode(int prn, int ctype, int *len, double *crate)
     case CTYPE_L1SBAS: return gencode_L1CA(prn,len,crate);
     case CTYPE_NH10  : return gencode_NH10(len,crate);
     case CTYPE_NH20  : return gencode_NH20(len,crate);
+    case CTYPE_I5S   : return gencode_I5S(prn,len,crate);
+    case CTYPE_ISS   : return gencode_ISS(prn,len,crate);
     default          : 
         SDRPRINTF("error: gencode prn:%d ctype:%d",prn,ctype);
         return NULL;
