@@ -1,7 +1,6 @@
-GNSS-SDRLIB v2.0 Beta
+GNSS-SDRLIB v2.0.1 Beta
 ===============================================================================
-An Open Source GNSS Software Defined Radio Library
-
+A port of GNSS-SDRLIB v2.0 Beta to support IRNSS L5 and S band.
 
 Author
 -------------------------------------------------------------------------------
@@ -28,6 +27,7 @@ Features
     * BeiDou B1I
     * QZSS L1CA/SAIF/LEX
     * SBAS L1
+    * IRNSS I5S/ISS (under construction)
 * Support following front-ends for real-time positioning
     * NSL Stereo <http://www.nsl.eu.com/primo.html>
     * SiGe GN3S sampler v2/v3 <https://www.sparkfun.com/products/10981>
