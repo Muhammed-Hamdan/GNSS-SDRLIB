@@ -141,5 +141,6 @@ bladerf.o : $(SRC)/sdr.h
 
 clean:
 	rm -f *.o $(BIN)
+	rm ../../bin/$(BIN)
 
 

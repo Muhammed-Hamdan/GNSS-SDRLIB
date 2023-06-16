@@ -210,6 +210,12 @@ extern "C" {
 #define NAVADDFLEN_B1IG 0              /* additional bits of frame (bits) */
 #define NAVPRELEN_B1IG  11             /* preamble bits length (bits) */
 #define NAVEPHCNT_B1IG  10             /* number of eph. contained frame */
+/* IRNSS L5/S */
+#define NAVRATE_ISS     20             /* length (multiples of ranging code) */
+#define NAVFLEN_ISS     600            /* navigation frame data (bits) */
+#define NAVADDFLEN_ISS  0              /* additional bits of frame (bits) */
+#define NAVPRELEN_ISS   16             /* preamble bits length (bits) */
+#define NAVEPHCNT_ISS   2              /* number of eph. contained frame */
 
 /* observation data generation */
 #define PTIMING       68.802           /* pseudo range generation timing (ms) */

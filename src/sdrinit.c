@@ -540,6 +540,8 @@ extern int initnavstruct(int sys, int ctype, int prn, sdrnav_t *nav)
     int pre_sbs[24]= { 1,-1, 1,-1, 1, 1,-1,-1,-1, 1,
                        1,-1,-1, 1,-1, 1,-1,-1, 1, 1,
                        1 -1,-1, 1}; /* SBAS L1/QZS L1SAIF preamble */
+    int pre_iss[16]= {-1,-1,-1, 1,-1, 1,-1,-1,-1, 1,
+                       1,-1, 1, 1, 1, 1}; /* IRNSS preamble */
 
     int poly[2]={V27POLYB,V27POLYA};
 
@@ -647,10 +649,24 @@ extern int initnavstruct(int sys, int ctype, int prn, sdrnav_t *nav)
             nav->update=(int)(nav->flen*nav->rate);
             memcpy(nav->prebits,pre_b1i,sizeof(int)*nav->prelen);
 
-            /* overlay code (all 1) */
+            /* overlay codVe (all 1) */
             nav->ocode=(short *)calloc(nav->rate,sizeof(short));
             for (i=0;i<nav->rate;i++) nav->ocode[i]=1;
         }
+    }
+    /* IRNSS I5S/ISS */
+    if (ctype==CTYPE_I5S || ctype==CTYPE_ISS) {
+        nav->rate=NAVRATE_ISS;
+        nav->flen=NAVFLEN_ISS;
+        nav->addflen=NAVADDFLEN_ISS;
+        nav->prelen=NAVPRELEN_ISS;
+        nav->sdreph.cntth=NAVEPHCNT_ISS;
+        nav->update=(int)(nav->flen*nav->rate);
+        memcpy(nav->prebits,pre_iss,sizeof(int)*nav->prelen);
+
+        /* overlay codVe (all 1) */
+        nav->ocode=(short *)calloc(nav->rate,sizeof(short));
+        for (i=0;i<nav->rate;i++) nav->ocode[i]=1;
     }
 
     if (!(nav->bitsync= (int *)calloc(nav->rate,sizeof(int))) || 

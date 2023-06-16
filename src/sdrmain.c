@@ -278,8 +278,6 @@ extern void *sdrthread(void *arg)
             }
         }
         
-        sdr->flagacq=0;
-
         /* tracking */
         if (sdr->flagacq) {
             bufflocnow=sdrtracking(sdr,buffloc,cnt);
@@ -302,10 +300,12 @@ extern void *sdrthread(void *arg)
                     mlock(hobsmtx);
 
                     /* calculate observation data */
+                    /*
                     if (loopcnt%(SNSMOOTHMS/sdr->trk.loopms)==0)
                         setobsdata(sdr,buffloc,cnt,&sdr->trk,1);
                     else
                         setobsdata(sdr,buffloc,cnt,&sdr->trk,0);
+                    */
 
                     unmlock(hobsmtx);
 

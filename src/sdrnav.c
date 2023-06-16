@@ -54,32 +54,32 @@ extern void sdrnavigation(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt)
                 sdr->nav.flagtow=ON;
             }
         }
-        /* decoding navigation data */
-        if (sdr->nav.flagtow&&sdr->nav.swsync) {
-            /* if frame bits are stored */
-            if ((int)(cnt-sdr->nav.firstsfcnt)%sdr->nav.update==0) {
-                predecodefec(&sdr->nav); /* FEC decoding */
-                sfn=decodenav(&sdr->nav); /* navigation message decoding */
-                
-                SDRPRINTF("%s ID=%d tow:%.1f week=%d cnt=%d\n",
-                    sdr->satstr,sfn,sdr->nav.sdreph.tow_gpst,
-                    sdr->nav.sdreph.week_gpst,(int)cnt);
-
-                /* set reference tow data */
-                if (sdr->nav.sdreph.tow_gpst==0) {
-                    /* reset if tow does not decoded */
-                    sdr->nav.flagsyncf=OFF;
-                    sdr->nav.flagtow=OFF;
-                } else if (cnt-sdr->nav.firstsfcnt==0) {
-                    sdr->nav.flagdec=ON;
-                    sdr->nav.sdreph.eph.sat=sdr->sat; /* satellite number */
-                    sdr->nav.firstsftow=sdr->nav.sdreph.tow_gpst; /* tow */
-
-                    if (sdr->nav.ctype==CTYPE_G1)
-                        sdr->prn=sdr->nav.sdreph.prn;
-                }
-            }
-        }
+//        /* decoding navigation data */
+//        if (sdr->nav.flagtow&&sdr->nav.swsync) {
+//            /* if frame bits are stored */
+//            if ((int)(cnt-sdr->nav.firstsfcnt)%sdr->nav.update==0) {
+//                predecodefec(&sdr->nav); /* FEC decoding */
+//                sfn=decodenav(&sdr->nav); /* navigation message decoding */
+//                
+//                SDRPRINTF("%s ID=%d tow:%.1f week=%d cnt=%d\n",
+//                    sdr->satstr,sfn,sdr->nav.sdreph.tow_gpst,
+//                    sdr->nav.sdreph.week_gpst,(int)cnt);
+//
+//                /* set reference tow data */
+//                if (sdr->nav.sdreph.tow_gpst==0) {
+//                    /* reset if tow does not decoded */
+//                    sdr->nav.flagsyncf=OFF;
+//                    sdr->nav.flagtow=OFF;
+//                } else if (cnt-sdr->nav.firstsfcnt==0) {
+//                    sdr->nav.flagdec=ON;
+//                    sdr->nav.sdreph.eph.sat=sdr->sat; /* satellite number */
+//                    sdr->nav.firstsftow=sdr->nav.sdreph.tow_gpst; /* tow */
+//
+//                    if (sdr->nav.ctype==CTYPE_G1)
+//                        sdr->prn=sdr->nav.sdreph.prn;
+//                }
+//            }
+//        }
     }
 }
 /* extract unsigned/signed bits ------------------------------------------------
@@ -296,7 +296,9 @@ extern void predecodefec(sdrnav_t *nav)
     if (nav->ctype==CTYPE_L1CA ||
         nav->ctype==CTYPE_G1   ||
         nav->ctype==CTYPE_B1I  ||
-        nav->ctype==CTYPE_E1B) {
+        nav->ctype==CTYPE_E1B  ||
+        nav->ctype==CTYPE_I5S  ||
+        nav->ctype==CTYPE_ISS) {
         /* FEC is not used before preamble detection */
         memcpy(nav->fbitsdec,nav->fbits,sizeof(int)*(nav->flen+nav->addflen));
     }
@@ -364,7 +366,9 @@ extern int paritycheck(sdrnav_t *nav)
     /* Galileo E1B / GLONASS G1 */
     if (nav->ctype==CTYPE_E1B ||
         nav->ctype==CTYPE_B1I ||
-        nav->ctype==CTYPE_G1 ) {
+        nav->ctype==CTYPE_G1  ||
+        nav->ctype==CTYPE_I5S ||
+        nav->ctype==CTYPE_ISS ) {
         return 1;
     }
 
@@ -379,8 +383,8 @@ extern int findpreamble(sdrnav_t *nav)
 {
     int i,corr=0;
 
-    /* GPS/QZS L1CA / BeiDou B1I*/
-    if (nav->ctype==CTYPE_L1CA || nav->ctype==CTYPE_B1I) {
+    /* GPS/QZS L1CA / BeiDou B1I / IRNSS L5/S */
+    if (nav->ctype==CTYPE_L1CA || nav->ctype==CTYPE_B1I || nav->ctype==CTYPE_I5S || nav->ctype==CTYPE_ISS) {
         for (i=0;i<nav->prelen;i++)
             corr+=(nav->fbitsdec[nav->addflen+i]*nav->prebits[i]);
     }
@@ -447,6 +451,10 @@ extern int decodenav(sdrnav_t *nav)
         /* BeiDou B1I */
         case CTYPE_B1I:
             return decode_b1i(nav);
+        /* IRNSS L5/S */
+        case CTYPE_I5S:
+        case CTYPE_ISS:
+            return decode_iss(nav);
         default:
             return -1;
     }
