@@ -1,6 +1,6 @@
 GNSS-SDRLIB v2.0.1 Beta
 ===============================================================================
-A port of GNSS-SDRLIB v2.0 Beta to support IRNSS L5 and S band.
+A port of [GNSS-SDRLIB v2.0 Beta](https://github.com/taroz/GNSS-SDRLIB) to support IRNSS L5 and S band.
 
 Author
 -------------------------------------------------------------------------------
