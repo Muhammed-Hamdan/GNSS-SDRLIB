@@ -54,16 +54,16 @@ extern void sdrnavigation(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt)
                 sdr->nav.flagtow=ON;
             }
         }
-//        /* decoding navigation data */
-//        if (sdr->nav.flagtow&&sdr->nav.swsync) {
-//            /* if frame bits are stored */
-//            if ((int)(cnt-sdr->nav.firstsfcnt)%sdr->nav.update==0) {
-//                predecodefec(&sdr->nav); /* FEC decoding */
-//                sfn=decodenav(&sdr->nav); /* navigation message decoding */
-//                
-//                SDRPRINTF("%s ID=%d tow:%.1f week=%d cnt=%d\n",
-//                    sdr->satstr,sfn,sdr->nav.sdreph.tow_gpst,
-//                    sdr->nav.sdreph.week_gpst,(int)cnt);
+        /* decoding navigation data */
+        if (sdr->nav.flagtow&&sdr->nav.swsync) {
+            /* if frame bits are stored */
+            if ((int)(cnt-sdr->nav.firstsfcnt)%sdr->nav.update==0) {
+                predecodefec(&sdr->nav); /* FEC decoding */
+                sfn=decodenav(&sdr->nav); /* navigation message decoding */
+                
+                SDRPRINTF("%s ID=%d tow:%.1f week=%d cnt=%d\n",
+                    sdr->satstr,sfn,sdr->nav.sdreph.tow_gpst,
+                    sdr->nav.sdreph.week_gpst,(int)cnt);
 //
 //                /* set reference tow data */
 //                if (sdr->nav.sdreph.tow_gpst==0) {
@@ -78,8 +78,8 @@ extern void sdrnavigation(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt)
 //                    if (sdr->nav.ctype==CTYPE_G1)
 //                        sdr->prn=sdr->nav.sdreph.prn;
 //                }
-//            }
-//        }
+            }
+        }
     }
 }
 /* extract unsigned/signed bits ------------------------------------------------

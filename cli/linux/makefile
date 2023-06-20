@@ -23,7 +23,7 @@ OPTIONS=-DSSE2_ENABLE -DFFTMTX -DENAIRN
 LIBS=-lfec
 
 OBS= sdrmain.o sdrcmn.o sdracq.o sdrcode.o sdrinit.o sdrnav.o\
-     sdrnav_gps.o sdrnav_glo.o sdrnav_gal.o sdrnav_bds.o sdrnav_sbs.o\
+     sdrnav_gps.o sdrnav_glo.o sdrnav_gal.o sdrnav_bds.o sdrnav_sbs.o sdrnav_iss.o\
      sdrout.o sdrplot.o sdrrcv.o sdrspec.o sdrtrk.o sdrlex.o\
      sdrsync.o rtkcmn.o rtcm.o rtcm2.o rtcm3.o rtcm3e.o rinex.o
 
@@ -77,6 +77,8 @@ sdrnav_bds.o : $(SRC)/sdrnav_bds.c
 	$(CC) -c $(CFLAGS) $(SRC)/sdrnav_bds.c
 sdrnav_sbs.o : $(SRC)/sdrnav_sbs.c
 	$(CC) -c $(CFLAGS) $(SRC)/sdrnav_sbs.c
+sdrnav_iss.o : $(SRC)/sdrnav_iss.c
+	$(CC) -c $(CFLAGS) $(SRC)/sdrnav_iss.c
 sdrplot.o: $(SRC)/sdrplot.c
 	$(CC) -c $(CFLAGS) $(SRC)/sdrplot.c
 sdrrcv.o : $(SRC)/sdrrcv.c
@@ -122,6 +124,7 @@ sdrnav_glo.o : $(SRC)/sdr.h
 sdrnav_gal.o : $(SRC)/sdr.h
 sdrnav_bds.o : $(SRC)/sdr.h
 sdrnav_sbs.o : $(SRC)/sdr.h
+sdrnav_iss.o : $(SRC)/sdr.h
 sdrplot.o: $(SRC)/sdr.h
 sdrrcv.o : $(SRC)/sdr.h
 sdrspec.o: $(SRC)/sdr.h

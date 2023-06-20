@@ -479,7 +479,7 @@ typedef struct {
 
 /* sdr ephemeris struct */
 typedef struct {
-    eph_t eph;           /* GPS/QZS/GAL/COM ephemeris struct (from rtklib.h) */
+    eph_t eph;           /* GPS/QZS/GAL/BDS/IRN ephemeris struct (from rtklib.h) */
     geph_t geph;         /* GLO ephemeris struct (from rtklib.h) */
     int ctype;           /* code type */
     double tow_gpst;     /* ephemeris tow in GPST */
@@ -812,6 +812,7 @@ extern int decode_e1b(sdrnav_t *nav);
 extern int decode_g1(sdrnav_t *nav);
 extern int decode_b1i(sdrnav_t *nav);
 extern int decode_l1sbas(sdrnav_t *nav);
+extern int decode_iss(sdrnav_t *nav);
 extern int paritycheck_l1ca(int *bits);
 
 /* sdrout.c ------------------------------------------------------------------*/

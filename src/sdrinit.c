@@ -664,6 +664,14 @@ extern int initnavstruct(int sys, int ctype, int prn, sdrnav_t *nav)
         nav->update=(int)(nav->flen*nav->rate);
         memcpy(nav->prebits,pre_iss,sizeof(int)*nav->prelen);
 
+        /* create fec */
+        if((nav->fec=create_viterbi27_port(292))==NULL) {
+            SDRPRINTF("error: create_viterbi27 failed\n");
+            return -1;
+        }
+        /* set polynomial */
+        set_viterbi27_polynomial_port(poly);
+
         /* overlay codVe (all 1) */
         nav->ocode=(short *)calloc(nav->rate,sizeof(short));
         for (i=0;i<nav->rate;i++) nav->ocode[i]=1;
