@@ -496,6 +496,8 @@ typedef struct {
                          /* temporary variables for decoding BeiDou D2 */
     int toe_bds,f1p3,cucp4,ep5,cicp6,i0p7,OMGdp8,omgp9;
     unsigned int f1p4,cucp5,ep6,cicp7,i0p8,OMGdp9,omgp10;
+                        /* temporary variables for decoding IRNSS I5S/ISS */
+    double toc1, tow1, ion[8], utc[9]; 
 } sdreph_t;
 
 /* sdr LEX struct */

@@ -5,6 +5,18 @@
 *-----------------------------------------------------------------------------*/
 #include "sdr.h"
 
+#define P2P11       2048.0                /* 2^11 */
+#define P2P12       4096.0                /* 2^12 */
+#define P2P14       16384.0               /* 2^14 */
+#define P2P15       32768.0               /* 2^15 */
+#define P2P16       65536.0               /* 2^16 */
+#define P2_51       4.440892098500626E-16 /* 2^-51 */
+#define P2_59       1.734723475976810E-18 /* 2^-59 */
+#define P2_66       1.355252715606881E-20 /* 2^-66 */
+#define P2_68       3.388131789017201E-21 /* 2^-68 */
+#define P2_28       3.725290298461914E-09 /* 2^-28 */
+#define P2_41       4.547473508864641E-13 /* 2^-41 */
+
 /* decode IRNSS navigation data (subframe 1) -------------------------------
 *
 * args   : uint8_t  *buff   I   navigation data bits
@@ -13,8 +25,7 @@
 *-----------------------------------------------------------------------------*/
 void decode_subframe1(const uint8_t *buff, sdreph_t *eph)
 {
-   eph->tow_gpst = getbitu(buff,8,17)*12.0;
-   eph->week_gpst = getbitu(buff,30,10);  
+    return;
 }
 
 /* decode IRNSS navigation data (subframe 2) -------------------------------
@@ -25,7 +36,7 @@ void decode_subframe1(const uint8_t *buff, sdreph_t *eph)
 *-----------------------------------------------------------------------------*/
 void decode_subframe2(const uint8_t *buff, sdreph_t *eph)
 {
-   eph->tow_gpst = getbitu(buff,8,17)*12.0;
+    return;
 }
 
 /* decode IRNSS navigation data (subframe 3) -------------------------------
@@ -36,7 +47,7 @@ void decode_subframe2(const uint8_t *buff, sdreph_t *eph)
 *-----------------------------------------------------------------------------*/
 void decode_subframe3(const uint8_t *buff, sdreph_t *eph)
 {
-   eph->tow_gpst = getbitu(buff,8,17)*12.0;
+    return;
 }
 
 /* decode IRNSS navigation data (subframe 4) -------------------------------
@@ -47,7 +58,7 @@ void decode_subframe3(const uint8_t *buff, sdreph_t *eph)
 *-----------------------------------------------------------------------------*/
 void decode_subframe4(const uint8_t *buff, sdreph_t *eph)
 {
-   eph->tow_gpst = getbitu(buff,8,17)*12.0;
+    return;
 }
 
 /* check IRNSS L5/S CRC -------------------------------------------------------
@@ -133,7 +144,6 @@ extern int decode_iss(sdrnav_t *nav)
     } else {
         /* decode navigation data */
         id=decode_subframe_iss(dec_iss,&nav->sdreph);
-        if (id<0||id>3) SDRPRINTF("error: ISS nav word number sfn=%d\n",id);
     }
     return id;
 }

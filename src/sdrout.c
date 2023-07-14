@@ -35,20 +35,26 @@ extern void createrinexopt(rnxopt_t *opt)
     int i;
 
     /* rinex setting */
-    opt->rnxver=3.02;
+    //opt->rnxver=3.02;
+    opt->rnxver=303;
     opt->navsys =SYS_ALL;
     strcpy(opt->prog,"GNSS-SDRLIB v1.1");
     strcpy(opt->rec[0],"GNSS-SDRLIB");
     strcpy(opt->rec[1],"GNSS-SDRLIB");
     strcpy(opt->rec[2],"1.1");
 
-    /* signal type (L1 only) */
-    for (i=0;i<6;i++) {
+    /* signal type (L5A only) */
+    //for (i=0;i<6;i++) {
+    for (i=0;i<7;i++) {
         opt->nobs[i]=4;
-        strcpy(opt->tobs[i][0],"C1C");
-        strcpy(opt->tobs[i][1],"L1C");
-        strcpy(opt->tobs[i][2],"D1C");
-        strcpy(opt->tobs[i][3],"S1C");
+        //strcpy(opt->tobs[i][0],"C1C");
+        //strcpy(opt->tobs[i][1],"L1C");
+        //strcpy(opt->tobs[i][2],"D1C");
+        //strcpy(opt->tobs[i][3],"S1C");
+        strcpy(opt->tobs[i][0],"C5A");
+        strcpy(opt->tobs[i][1],"L5A");
+        strcpy(opt->tobs[i][2],"D5A");
+        strcpy(opt->tobs[i][3],"S5A");
     }
 
     for (i=0;i<MAXSAT;i++) opt->exsats[i]=0;
@@ -77,7 +83,8 @@ extern void sdrobs2obsd(sdrobs_t *sdrobs, int ns, obsd_t *out)
         else
             out[i].SNR[0]=(unsigned char)(sdrobs[i].S*4.0+0.5);
         /* signal type */
-        out[i].code[0]=CODE_L1C; /* L1C/A,G1C/A,E1C (GPS,GLO,GAL,QZS,SBS) */
+        //out[i].code[0]=CODE_L1C; /* L1C/A,G1C/A,E1C (GPS,GLO,GAL,QZS,SBS) */
+        out[i].code[0]=CODE_L5A;   /* L5 IRNSS */
     }
 }
 /* create rinex observation data file ------------------------------------------

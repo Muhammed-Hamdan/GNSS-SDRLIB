@@ -1344,7 +1344,7 @@ static short *gencode_I5S(int prn, int *len, double *crate)
 
     return code;
 }
-/* NavIC L5 C/A code (NavIC SPS ICD) --------------------------------------------*/
+/* NavIC S C/A code (NavIC SPS ICD) --------------------------------------------*/
 static short *gencode_ISS(int prn, int *len, double *crate)
 {
     const static short init[]={ /* G2 initial condition */

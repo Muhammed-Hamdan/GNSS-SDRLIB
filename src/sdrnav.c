@@ -64,20 +64,20 @@ extern void sdrnavigation(sdrch_t *sdr, uint64_t buffloc, uint64_t cnt)
                 SDRPRINTF("%s ID=%d tow:%.1f week=%d cnt=%d\n",
                     sdr->satstr,sfn,sdr->nav.sdreph.tow_gpst,
                     sdr->nav.sdreph.week_gpst,(int)cnt);
-//
-//                /* set reference tow data */
-//                if (sdr->nav.sdreph.tow_gpst==0) {
-//                    /* reset if tow does not decoded */
-//                    sdr->nav.flagsyncf=OFF;
-//                    sdr->nav.flagtow=OFF;
-//                } else if (cnt-sdr->nav.firstsfcnt==0) {
-//                    sdr->nav.flagdec=ON;
-//                    sdr->nav.sdreph.eph.sat=sdr->sat; /* satellite number */
-//                    sdr->nav.firstsftow=sdr->nav.sdreph.tow_gpst; /* tow */
-//
-//                    if (sdr->nav.ctype==CTYPE_G1)
-//                        sdr->prn=sdr->nav.sdreph.prn;
-//                }
+
+                /* set reference tow data */
+                if (sdr->nav.sdreph.tow_gpst==0) {
+                    /* reset if tow does not decoded */
+                    sdr->nav.flagsyncf=OFF;
+                    sdr->nav.flagtow=OFF;
+                } else if (cnt-sdr->nav.firstsfcnt==0) {
+                    sdr->nav.flagdec=ON;
+                    sdr->nav.sdreph.eph.sat=sdr->sat; /* satellite number */
+                    sdr->nav.firstsftow=sdr->nav.sdreph.tow_gpst; /* tow */
+
+                    if (sdr->nav.ctype==CTYPE_G1)
+                        sdr->prn=sdr->nav.sdreph.prn;
+                }
             }
         }
     }

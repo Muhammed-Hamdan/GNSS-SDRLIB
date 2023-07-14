@@ -142,7 +142,7 @@ extern void startsdr(void) /* call as function */
     openhandles();
 
     /* create threads */
-    //cratethread(hsyncthread,syncthread,NULL); /* synchronization thread */
+    cratethread(hsyncthread,syncthread,NULL); /* synchronization thread */
 
     /* sdr channel thread */
     for (i=0;i<sdrini.nch;i++) {
@@ -300,12 +300,10 @@ extern void *sdrthread(void *arg)
                     mlock(hobsmtx);
 
                     /* calculate observation data */
-                    /*
                     if (loopcnt%(SNSMOOTHMS/sdr->trk.loopms)==0)
                         setobsdata(sdr,buffloc,cnt,&sdr->trk,1);
                     else
                         setobsdata(sdr,buffloc,cnt,&sdr->trk,0);
-                    */
 
                     unmlock(hobsmtx);
 
